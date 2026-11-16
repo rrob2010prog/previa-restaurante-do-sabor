@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cardápio do Dia · Restaurante do Sabor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--madeira:#4a2c1a;--madeira-2:#6b4126;--laranja:#e0731f;--laranja-2:#f59a42;--creme:#fbf3e8;--papel:#fffaf3;--texto:#2b1c12;--suave:#7a6352;--linha:#ecdcc6;--verde:#25d366}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Nunito,system-ui,sans-serif;background:var(--creme);color:var(--texto);padding-bottom:124px}
+  .demo{background:var(--madeira);color:#f6d7b0;font-size:12px;text-align:center;padding:6px 16px}
+  header{background:radial-gradient(circle at 50% 0,var(--madeira-2),var(--madeira));color:#fff;text-align:center;padding:22px 16px 26px;border-radius:0 0 28px 28px}
+  header img{width:104px;height:104px;border-radius:50%;border:3px solid var(--laranja);display:block;margin:0 auto 10px;background:#fff}
+  header h1{font-family:Pacifico,cursive;font-weight:400;font-size:27px;line-height:1.25}
+  header p{opacity:.88;font-size:14px;margin-top:4px}
+  .chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+  .chip{background:rgba(255,255,255,.12);border-radius:99px;padding:5px 12px;font-size:12.5px}
+  .hoje{max-width:640px;margin:14px auto 0;padding:0 16px}
+  .hoje div{background:#fff1e1;border:1.5px dashed var(--laranja);border-radius:14px;padding:10px 12px;font-size:13.5px;color:var(--madeira)}
+  .hoje b{color:var(--laranja)}
+  nav{position:sticky;top:0;z-index:5;background:var(--creme);padding:12px 0 8px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav a{display:inline-block;margin-left:16px;padding:8px 14px;border-radius:99px;background:#fff;border:1px solid var(--linha);color:var(--madeira);font-weight:700;font-size:14px;text-decoration:none}
+  nav a:last-child{margin-right:16px}
+  nav a.ativo{background:var(--laranja);border-color:var(--laranja);color:#fff}
+  main{max-width:640px;margin:0 auto;padding:0 16px}
+  h2{font-size:19px;color:var(--madeira);margin:22px 0 4px;scroll-margin-top:64px}
+  .regra{color:var(--suave);font-size:13px;margin-bottom:10px}
+  .item{background:var(--papel);border:1px solid var(--linha);border-radius:16px;padding:14px;margin-bottom:10px}
+  .item h3{font-size:16px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+  .tag{font-size:11px;font-weight:800;border-radius:6px;padding:2px 6px;white-space:nowrap}
+  .tag.real{color:#1d6b3a;background:#e3f5e9}
+  .tag.ex{color:#8a5a12;background:#fdebd2}
+  .item p{color:var(--suave);font-size:13.5px;margin:3px 0 10px;line-height:1.4}
+  .opcoes{display:flex;flex-wrap:wrap;gap:8px}
+  .op{flex:1 1 120px;display:flex;justify-content:space-between;align-items:center;gap:8px;border:1.5px solid var(--linha);background:#fff;border-radius:12px;padding:9px 10px;font:inherit;font-size:14px;cursor:pointer;color:var(--texto)}
+  .op i{font-style:normal;color:var(--suave);font-size:12.5px}
+  .op .qt{background:var(--laranja);color:#fff;border-radius:99px;min-width:22px;height:22px;font-size:12px;font-weight:800;display:none;align-items:center;justify-content:center}
+  .op.tem{border-color:var(--laranja)}
+  .op.tem .qt{display:inline-flex}
+  .barra{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--creme) 30%)}
+  .barra button{width:100%;max-width:608px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;border:0;border-radius:16px;padding:16px 18px;background:var(--madeira);color:#fff;font:inherit;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 6px 20px rgba(74,44,26,.35)}
+  .barra button:disabled{opacity:.45;cursor:default}
+  .fundo{position:fixed;inset:0;background:rgba(30,18,10,.55);display:none;z-index:20}
+  .fundo.aberto{display:block}
+  .gaveta{position:absolute;left:0;right:0;bottom:0;max-height:92vh;overflow:auto;background:var(--papel);border-radius:22px 22px 0 0;padding:20px 16px 24px;max-width:640px;margin:0 auto}
+  .gaveta h2{margin-top:0}
+  .linha{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dashed var(--linha);font-size:14.5px}
+  .linha .nome{flex:1}
+  .linha .nome small{display:block;color:var(--suave)}
+  .menos,.mais{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--laranja);background:#fff;color:var(--laranja);font-weight:800;font-size:16px;cursor:pointer}
+  label{display:block;font-weight:700;font-size:14px;margin:14px 0 6px}
+  input,textarea{width:100%;padding:11px;border-radius:12px;border:1.5px solid var(--linha);font:inherit;font-size:15px;background:#fff}
+  .seg{display:flex;gap:8px;flex-wrap:wrap}
+  .seg button{flex:1 1 100px;padding:10px;border-radius:12px;border:1.5px solid var(--linha);background:#fff;font:inherit;font-weight:700;cursor:pointer;color:var(--texto)}
+  .seg button.sel{border-color:var(--laranja);background:#fff1e3;color:var(--madeira)}
+  .obs{color:var(--suave);font-size:12.5px;line-height:1.5}
+  .enviar{width:100%;margin-top:16px;border:0;border-radius:16px;padding:16px;background:var(--verde);color:#fff;font:inherit;font-weight:800;font-size:16px;cursor:pointer}
+  .fechar{float:right;border:0;background:none;font-size:26px;line-height:1;color:var(--suave);cursor:pointer}
+  .selo{display:table;margin:0 auto 6px;background:var(--laranja);color:#fff;font-weight:800;font-size:11px;letter-spacing:.04em;padding:4px 9px;border-radius:8px}
+  h2 .selo{display:inline-block;vertical-align:middle;margin:0 0 0 8px}
+  footer{text-align:center;color:var(--suave);font-size:12.5px;margin:28px 0 8px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="demo">Prévia feita pela Lumina Serviços Digitais para o Aluisio · ainda não publicada · os pedidos de teste vão para o WhatsApp da Lumina</div>
+<header>
+  <img src="data:image/jpeg;base64,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" alt="Logotipo Mercearia e Restaurante do Sabor">
+  <h1>Restaurante do Sabor</h1>
+  <p>Restaurante, marmitas e mercearia · comida caseira, feita com carinho</p>
+  <div class="chips">
+    <span class="chip">📍 Bairro dos Estados</span>
+    <span class="chip">🛵 Entrega até 5 km</span>
+    <span class="chip">🏠 Retirada no balcão</span>
+  </div>
+</header>
+<div class="hoje"><div><b>Cardápio de hoje.</b> O Aluisio troca os pratos do dia e o link continua o mesmo. Itens marcados como <b>exemplo</b> serão trocados pelo cardápio real que ele mandou.</div></div>
+
+<nav id="nav"></nav>
+<main id="cardapio"></main>
+
+<footer>R. Aurélio Rocha, 534 · Bairro dos Estados · João Pessoa-PB<br>Pedidos (83) 98712-4981 · Preços confirmados no WhatsApp</footer>
+
+<div class="barra"><div class="selo">PRÉVIA · não publicada</div><button id="verPedido" disabled><span>🛒 <span id="qtd">Escolha seu almoço</span></span><span id="totalBarra"></span></button></div>
+
+<div class="fundo" id="fundo">
+  <div class="gaveta">
+    <button class="fechar" id="fechar" aria-label="Fechar">×</button>
+    <h2>Seu pedido <span class="selo">PRÉVIA · não publicada</span></h2>
+    <div id="itens"></div>
+    <label for="nome">Seu nome</label>
+    <input id="nome" autocomplete="name" placeholder="Como podemos te chamar?">
+    <label>Como quer receber?</label>
+    <div class="seg" id="modo"><button data-v="Entrega" class="sel">🛵 Entrega</button><button data-v="Retirada">🏠 Retirar no balcão</button></div>
+    <div id="blocoEndereco">
+      <label for="endereco">Endereço (até 5 km)</label>
+      <textarea id="endereco" rows="2" placeholder="Rua, número, bairro e ponto de referência"></textarea>
+    </div>
+    <label>Pagamento</label>
+    <div class="seg" id="pag"><button data-v="Pix" class="sel">Pix</button><button data-v="Cartão">Cartão</button><button data-v="Dinheiro">Dinheiro</button></div>
+    <label for="obs">Observação (opcional)</label>
+    <input id="obs" placeholder="Ex.: sem salada, troco para 50">
+    <p class="obs" style="margin-top:12px">O valor do pedido e da entrega é confirmado pelo restaurante no WhatsApp.</p>
+    <button class="enviar" id="enviar">Enviar pedido pelo WhatsApp</button>
+  </div>
+</div>
+
+<script>
+// Número que recebe os pedidos. Na prévia é o WhatsApp da Lumina; no cardápio dele entra o (83) 98712-4981.
+const WHATS = '5511954746914';
+// Rubacão: post "Hoje é dia de Rubacão" do Instagram dele. Os demais são EXEMPLOS até passarmos o cardápio que ele mandou em 09/11.
+const CARDAPIO = [
+  { id:'hoje', nome:'Pratos de hoje', regra:'Refeição completa, com tempero caseiro.', itens:[
+    { nome:'Rubacão', real:true, desc:'Prato do dia, bem servido.', op:['Marmita','Prato no local'] },
+    { nome:'Prato do dia 2', desc:'Exemplo: aqui entra o segundo prato do cardápio de hoje.', op:['Marmita','Prato no local'] },
+    { nome:'Prato do dia 3', desc:'Exemplo: aqui entra o terceiro prato do cardápio de hoje.', op:['Marmita','Prato no local'] },
+  ]},
+  { id:'bebidas', nome:'Bebidas', regra:'Para acompanhar o almoço.', itens:[
+    { nome:'Suco ou refrigerante', desc:'Exemplo: sabores e tamanhos que o restaurante oferece.', op:['Unidade'] },
+  ]},
+  { id:'mercearia', nome:'Mercearia', regra:'Peça junto com a marmita e receba tudo de uma vez.', itens:[
+    { nome:'Itens da mercearia', desc:'Exemplo: aqui entram os produtos que a mercearia vende.', op:['Unidade'] },
+  ]},
+];
+const pedido = new Map();
+const nav=document.getElementById('nav'), main=document.getElementById('cardapio');
+CARDAPIO.forEach((cat,ci)=>{
+  nav.insertAdjacentHTML('beforeend',`<a href="#${cat.id}" class="${ci?'':'ativo'}">${cat.nome}</a>`);
+  const sec=document.createElement('section');
+  sec.innerHTML=`<h2 id="${cat.id}">${cat.nome}</h2><p class="regra">${cat.regra}</p>`;
+  cat.itens.forEach(it=>{
+    const card=document.createElement('div'); card.className='item';
+    card.innerHTML=`<h3><span>${it.nome}</span><span class="tag ${it.real?'real':'ex'}">${it.real?'do Instagram':'exemplo'}</span></h3><p>${it.desc}</p><div class="opcoes">${it.op.map((t,oi)=>`<button class="op" data-oi="${oi}"><span>${t}</span><span><i>preço a confirmar</i> <span class="qt"></span></span></button>`).join('')}</div>`;
+    card.querySelectorAll('.op').forEach(b=>b.onclick=()=>{const t=it.op[b.dataset.oi];const k=it.nome+'|'+t;const a=pedido.get(k)||{nome:it.nome,tam:t,qt:0};a.qt++;pedido.set(k,a);atualizar();});
+    sec.appendChild(card);
+  });
+  main.appendChild(sec);
+});
+const links=[...nav.querySelectorAll('a')];
+const vigia=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('ativo',a.hash==='#'+e.target.id));}),{rootMargin:'-70px 0px -70% 0px'});
+CARDAPIO.forEach(c=>vigia.observe(document.getElementById(c.id)));
+const qtot=()=>{let q=0;pedido.forEach(i=>q+=i.qt);return q;};
+const fundo=document.getElementById('fundo'); const fechar=()=>fundo.classList.remove('aberto');
+function atualizar(){
+  const q=qtot();
+  document.getElementById('verPedido').disabled=!q;
+  document.getElementById('qtd').textContent=q?`Ver pedido (${q} ${q>1?'itens':'item'})`:'Escolha seu almoço';
+  document.querySelectorAll('.item').forEach(card=>{const nome=card.querySelector('h3 span').textContent;card.querySelectorAll('.op').forEach(b=>{const i=pedido.get(nome+'|'+b.querySelector('span').textContent);b.classList.toggle('tem',!!i);b.querySelector('.qt').textContent=i?i.qt:'';});});
+  const lista=document.getElementById('itens'); lista.innerHTML='';
+  pedido.forEach((i,k)=>{const d=document.createElement('div');d.className='linha';d.innerHTML=`<div class="nome">${i.qt}× ${i.nome}<small>${i.tam}</small></div><button class="menos" aria-label="Tirar um">−</button><button class="mais" aria-label="Pôr mais um">+</button>`;d.querySelector('.menos').onclick=()=>{i.qt--;if(!i.qt)pedido.delete(k);atualizar();if(!qtot())fechar();};d.querySelector('.mais').onclick=()=>{i.qt++;atualizar();};lista.appendChild(d);});
+}
+document.getElementById('verPedido').onclick=()=>fundo.classList.add('aberto');
+document.getElementById('fechar').onclick=fechar;
+fundo.onclick=e=>{if(e.target===fundo)fechar();};
+function segmento(id,cb){const el=document.getElementById(id);el.querySelectorAll('button').forEach(b=>b.onclick=()=>{el.querySelectorAll('button').forEach(x=>x.classList.toggle('sel',x===b));cb&&cb(b.dataset.v);});return()=>el.querySelector('.sel').dataset.v;}
+const modo=segmento('modo',v=>document.getElementById('blocoEndereco').style.display=v==='Entrega'?'':'none');
+const pag=segmento('pag');
+document.getElementById('enviar').onclick=()=>{
+  const nome=document.getElementById('nome').value.trim(), end=document.getElementById('endereco').value.trim();
+  if(!nome)return document.getElementById('nome').focus();
+  if(modo()==='Entrega'&&!end)return document.getElementById('endereco').focus();
+  const linhas=[];pedido.forEach(i=>linhas.push(`• ${i.qt}x ${i.nome} (${i.tam})`));
+  const obs=document.getElementById('obs').value.trim();
+  const msg=['*Novo pedido: Restaurante do Sabor*','',...linhas,'',`Nome: ${nome}`,`Receber: ${modo()}${modo()==='Entrega'?` (${end})`:''}`,`Pagamento: ${pag()}`,obs?`Obs.: ${obs}`:''].filter((l,i,a)=>!(l===''&&a[i-1]==='')).join('\n').trim();
+  window.open(`https://wa.me/${WHATS}?text=${encodeURIComponent(msg)}`,'_blank');
+};
+atualizar();
+</script>
+</body>
+</html>
